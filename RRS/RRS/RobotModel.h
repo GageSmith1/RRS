@@ -10,16 +10,34 @@ using namespace std;
 
 class RobotModel {
 public:
-	RobotModel(string a, int b, double c) {
+	RobotModel(string a, int b, double c, int d, int e, int f, int g, int h, int i, int j, int k) {
 		name = a;
 		modelNum = b;
 		price = c;
+		leftArm = d;
+		rightArm = e;
+		head = f;
+		torso = g;
+		locomotor = h;
+		battery1 = i;
+		battery2 = j;
+		battery3 = k;
 	}
 	void printRobotModel(int count);
+	int get_modelNum() { return modelNum; };
+
 protected:
 	string name;
 	int modelNum;
 	double price;
+	int leftArm;
+	int rightArm;
+	int head;
+	int torso;
+	int locomotor;
+	int battery1;
+	int battery2;
+	int battery3;
 };
 
 class Part {
@@ -44,6 +62,8 @@ public:
 		description = e;
 	}
 	void printArm(int count);
+	int get_partNum() { return partNum; };
+	int get_cost() { return cost; };
 };
 class Head : public Part {
 public:
@@ -55,6 +75,8 @@ public:
 		description = e;
 	}
 	void printHead(int count);
+	int get_partNum() { return partNum; };
+	int get_cost() { return cost; };
 };
 class Locomotor : public Part {
 public:
@@ -67,6 +89,8 @@ public:
 		maxSpeed = f;
 	}
 	void printLocomotor(int count);
+	int get_partNum() { return partNum; };
+	int get_cost() { return cost; };
 protected:
 	int maxSpeed;
 };
@@ -82,6 +106,8 @@ public:
 		maxPower = g;
 	}
 	void printBattery(int count);
+	int get_partNum() { return partNum; };
+	int get_cost() { return cost; };
 protected:
 	double energy;
 	double maxPower;
@@ -97,16 +123,19 @@ public:
 		batterySlots = f;
 	}
 	void printTorso(int count);
+	int get_batterySlots() { return batterySlots; };
+	int get_partNum() { return partNum; };
+	int get_cost() { return cost; };
 protected:
 	int batterySlots;
 };
 
 void RobotModel::printRobotModel(int count) {
-	cout << endl << "(" << count + 1 << ") " << name << "-" << modelNum << " $" << price;
+	cout << endl << "(" << count + 1 << ") " << name << endl << "Model number: " << modelNum << endl << "Price: $" << price;
 }
 
 void Arm::printArm(int count) {
-	cout << endl << count << ". " << name;
+	cout << endl << count + 1 << ". " << name;
 	cout << endl << "Part number: " << partNum;
 	cout << endl << "Weight[lb]: " << weight;
 	cout << endl << "Cost[Dollars]: " << "$" << cost;
