@@ -3,17 +3,22 @@
 
 #include "stdafx.h"
 #include "RobotModel.h"
+#include "customer.h"
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
 int main()
 {
-	int b, count = 0,armCount = 0,headCount = 0, torsoCount = 0, i, m, partNum, loop;
-	int num = -1, locoCount = 0, batteryCount = 0, q, d, e, f, g, h, i1, j, k, batterySlots;
-	string a, l, p;
-	double c, n, o, r, s;
+	int b, count = 0,armCount = 0,headCount = 0, torsoCount = 0, i, m, partNum, loop, saCount = 0, id;
+	int num = -1, locoCount = 0, batteryCount = 0, q, d, e, f, g, h, i1, j, k, batterySlots, customerCount = 0;
+	int idCheck, employeeID, month, day, year, customerID, modelID, orderNum, orderCount = 0;
+	string a, l, p, name;
+	double c, n, o, r, s, wallet;
+	srand(time(NULL));
 
 	vector<RobotModel> model;
 	vector<Arm> arm;
@@ -21,14 +26,19 @@ int main()
 	vector<Locomotor> loco;
 	vector<Battery> battery;
 	vector<Torso> torso;
+	vector<customer> Customer;
+	vector<SA> sa;
+	vector<Order> order;
 
 	while (num != 0) {
 		cout << "--------------------" << endl;
 		cout << "(1) Create RobotModel" << endl;
 		cout << "(2) Browse RoboModels" << endl;
 		cout << "(3) Create RobotPart" << endl;
-		cout << "(4) Browse parts" << endl;
-		cout << "(0) Exit program" << endl;
+		cout << "(4) Browse Parts" << endl;
+		cout << "(5) Customer Menu" << endl;
+		cout << "(6) Sales Associate Menu" << endl;
+		cout << "(0) Exit Program" << endl;
 		cout << "--------------------" << endl;
 		cin >> num;
 		if (num == 1) {
@@ -219,7 +229,7 @@ int main()
 				cout << "(4) Locomotor" << endl;
 				cout << "(5) Battery" << endl;
 				cout << "(-1) Back" << endl;
-				cout << "(0) Exit program" << endl;
+				cout << "(0) Exit Program" << endl;
 				cout << "--------------------" << endl;
 				cin >> num;
 				if (num == 1) {
@@ -388,6 +398,151 @@ int main()
 			cout << endl << "----------" << endl << "Battery" << endl << "----------" << endl;
 			for (i = 0; i < batteryCount; i++) {
 				battery[i].printBattery(i);
+			}
+		}
+		else if (num == 5) {
+			while (num != 0 && num != -1) {
+				cout << "--------------------" << endl;
+				cout << "(1) Browse RoboModels" << endl;
+				cout << "(2) Register as customer" << endl;
+				cout << "(3) View Orders" << endl;
+				cout << "(-1) Back" << endl;
+				cout << "(0) Exit Program" << endl;
+				cout << "--------------------" << endl;
+				cin >> num;
+
+				if (num == 1) {
+					if (count != 0) {
+						for (i = 0; i < count; i++) {
+							model[i].printRobotModel(i);
+						}
+					}
+					else {
+						cout << endl << "There are currently no robot models for sale.";
+					}
+					cout << endl << endl;
+				}
+				else if (num == 2) {
+					cout << "Enter your name: ";
+					cin.ignore();
+					getline(cin, name);
+					cout << endl << "Enter the amount of money you wish to put in your wallet: ";
+					cin >> wallet;
+					//loop = 1;
+					//while (loop = 1) {
+						//loop = 0;
+						id = rand() % 99999;
+						//for (i = 0; i < customerCount; i++) {
+							//idCheck = Customer[i].get_customerNum();
+							//if (id == idCheck) {
+								//loop = 1;
+							//}
+						//}
+					//}
+					cout << endl << "Your customer number is " << id << ".";
+					Customer.push_back(customer(name, id, wallet));
+					customerCount++;
+					cout << endl << endl;
+				}
+				else if (num == 3) {
+					if (orderCount != 0) {
+						for (i = 0; i < customerCount; i++) {
+							Customer[i].printCustomer(i);
+						}
+						cout << endl << "Enter your customer ID: ";
+						cin >> customerID;
+
+						cout << endl << "Bellow is(are) the following robot(s) you have ordered: " << endl;
+						for (i = 0; i < orderCount; i++) {
+							id = order[i].get_customerNum();
+							if (id == customerID) {
+								modelID = order[i].get_robotModelNum();
+								for (j = 0; j < count; j++) {
+									id = model[j].get_modelNum();
+									if (modelID == id) {
+										model[j].printRobotModel(j);
+									}
+								}
+							}
+						}
+						cout << endl << endl;
+					}
+					else
+					{
+						cout << endl << "There are currently no orders please place an order.";
+					}
+				}
+			}
+		}
+		else if (num == 6) {
+			while (num != 0 && num != -1) {
+				cout << "--------------------" << endl;
+				cout << "(1) Register As Sales Associate" << endl;
+				cout << "(2) Show Current Sale Associates" << endl;
+				cout << "(3) Order Robot" << endl;
+				cout << "(-1) Back" << endl;
+				cout << "(0) Exit Program" << endl;
+				cout << "--------------------" << endl;
+				cin >> num;
+
+				if (num == 1) {
+					cout << endl << "Enter your name: ";
+					cin.ignore();
+					getline(cin, name);
+					id = rand() % 99999;
+					cout << endl << "Your employee id is: " << id << endl;
+					sa.push_back(SA(name, id));
+					saCount++;
+				}
+				else if (num == 2) {
+					if (saCount != 0) {
+						for (i = 0; i < saCount; i++) {
+							sa[i].printSA(i);
+						}
+					}
+					else {
+						cout << endl << "There are currently no Sales Associates availible." << endl;
+					}
+				}
+				else if (num == 3) {
+					if (customerCount != 0) {
+						for (i = 0; i < saCount; i++) {
+							sa[i].printSA(i);
+						}
+						cout << endl << "Enter your employee ID: ";
+						cin >> employeeID;
+
+						for (i = 0; i < customerCount; i++) {
+							Customer[i].printCustomer(i);
+						}
+						cout << endl << "Enter Customer ID of your client: ";
+						cin >> customerID;
+
+						for (i = 0; i < count; i++) {
+							model[i].printRobotModel(i);
+						}
+						cout << endl << endl << "Enter the model number of the robot model: ";
+						cin >> modelID;
+
+						orderNum = rand() % 99999;
+						cout << endl << "The order id is: " << orderNum << endl;
+
+						cout << endl << "Enter month: ";
+						cin >> month;
+
+						cout << endl << "Enter day: ";
+						cin >> day;
+
+						cout << endl << "Enter year: ";
+						cin >> year;
+
+						order.push_back(Order(month, day, year, orderNum, modelID, employeeID, customerID));
+						orderCount++;
+					}
+					else {
+						cout << endl << "There are currently no registered customers." << endl << endl;
+					}
+				}
 			}
 		}
 	}
